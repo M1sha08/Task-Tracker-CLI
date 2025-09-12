@@ -1,93 +1,104 @@
 """ task_manager """
 
 import storage
+import utils
 
-def execute_command(arguments):
-
-  commands = [
-      {"command": "add", "action": handle_add_task, "required_args": 1},
-      {"command": "update", "action": handle_update_task, "required_args": 2},
-      {"command": "delete", "action": handle_delete_task, "required_args": 1},
-      {"command": "mark-in-progress", "action": handle_mark_in_progress, "required_args": 1},
-      {"command": "mark-done", "action": handle_mark_done, "required_args": 1},
-      {"command": "list", "action": handle_list_tasks, "required_args": 0},
-      {"command": "list-done", "action": handle_list_done_tasks, "required_args": 0},
-      {"command": "list-todo", "action": handle_list_todo_tasks, "required_args": 0},
-      {"command": "list-in-progress","action": handle_list_in_progress_tasks, "required_args": 0},
-      {"command": "help", "action": show_help, "required_args": 0}
-    ]
-  
-  cmd_found = None
-  if 1 < len(arguments) < 5:
-
-    for cmd in commands:
-      if arguments[1] == cmd["command"]:
-        cmd_found = cmd
-        break
-
-    if cmd_found == None:
-      print(f"Couldn't find command: '{arguments[1]}'")
-      return
-    
-    if len(arguments) - 2 == cmd_found["required_args"]:
-      cmd_found["action"](*arguments[2:])
-      return
-    print(f"The command '{cmd_found['command']}' expects {cmd_found['required_args']} argument(s), but you gave {len(arguments) - 2}") 
-
-  else:
-    print("Invalid amount of arguments! Enter 'help' for more information.")
-    return
-  
-def handle_add_task(description):
+def handle_add_task(description: str) -> None:
   if not storage.check_task_exists(description, by_desc=True):
     storage.save_new_task(description)
+    print("Task added successfully.")
   else:
     print("Task already exists, try updating it instead.")
 
-def handle_update_task(id, new_description):
+def handle_update_task(id: int, new_description: str) -> None:
+
+  if not utils.is_valid_int(id):
+    print(f"Invalid ID: ({id}). It must be an integer.")
+    return
   id = int(id)
 
-  if task := storage.fetch_task_by_id(id):
-    storage.modify_task(task, new_description)
-    print(f"Task with ID {id} updated successfully.")
+  if storage.check_task_exists(id=id, by_id=True):
+    task = storage.fetch_task_by_id(id)
+    if storage.modify_task(task, new_description):
+      print(f"Task with ID {id} was successfully updated.")
+    else:
+      print("Task with similar description exists.")
   else:
     print(f"No task found with the ID {id}!")
 
-def handle_delete_task(id):
+def handle_delete_task(id: int) -> None:
+
+  if not utils.is_valid_int(id):
+    print(f"Invalid ID: ({id}). It must be an integer.")
+    return
+  id = int(id)
+
   if storage.check_task_exists(id=id, by_id=True):
     task = storage.fetch_task_by_id(id)
-    if not storage.remove_task(task):
-      print("Error: Couldn't delete the task.")
-      return
+    storage.remove_task(task)
     print(f"Task with ID {id} was successfully deleted.")
   else:
-    print(f"Error: Couldn't find the task with ID {id}.")
+    print(f"Couldn't find the task with ID {id}.")
 
-def handle_mark_in_progress(id):
+def handle_mark_in_progress(id: int) -> None:
+
+  if not utils.is_valid_int(id):
+    print(f"Invalid ID: ({id}). It must be an integer.")
+    return
+  id = int(id)
+
   if storage.check_task_exists(id=id, by_id=True):
     task = storage.fetch_task_by_id(id)
     storage.set_task_in_progress(task)
   else:
-    print(f"Error: Couldn't find the task with ID {id}.")
+    print(f"Couldn't find the task with ID {id}.")
 
-def handle_mark_done(id):
+def handle_mark_done(id: int) -> None:
+
+  if not utils.is_valid_int(id):
+    print(f"Invalid ID: ({id}). It must be an integer.")
+    return
+  id = int(id)
+
   if storage.check_task_exists(id=id, by_id=True):
     task = storage.fetch_task_by_id(id)
     storage.set_task_done(task)
   else:
-    print(f"Error: Couldn't find the task with ID {id}.")
+    print(f"Couldn't find the task with ID {id}.")
 
-def handle_list_tasks():
-  print(storage.list_tasks_from_file())
+def handle_list_tasks() -> None:
 
-def handle_list_done_tasks():
-  print(storage.list_done_tasks_from_file())
+  tasks = storage.get_every_task()
+
+  if not tasks:
+    print("No tasks to show.")
+    return
+
+  utils.list_tasks(tasks)
+
+def handle_list_done_tasks() -> None:
+  done_tasks = storage.get_done_tasks()
+
+  if not done_tasks:
+    print("No tasks with status 'done' to show.")
+    return
   
-def handle_list_todo_tasks():
-  print(storage.list_todo_tasks_from_file())
-
-def handle_list_in_progress_tasks():
-  print(storage.list_in_progress_tasks_from_file())
+  utils.list_tasks(done_tasks)
   
-def show_help():
-  print("Help")
+def handle_list_todo_tasks() -> None:
+  todo_tasks = storage.get_todo_tasks()
+
+  if not todo_tasks:
+    print("No tasks with status 'todo' to show.")
+    return
+
+  utils.list_tasks(todo_tasks)
+
+def handle_list_in_progress_tasks() -> None:
+  in_progress_tasks = storage.get_in_progress_tasks()
+
+  if not in_progress_tasks:
+    print("No tasks with status 'in-progress' to show.")
+    return
+  
+  utils.list_tasks(in_progress_tasks)

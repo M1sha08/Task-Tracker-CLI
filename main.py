@@ -1,10 +1,11 @@
 """ main.py """
 
-import sys, task_manager
+import sys
+from execute_command import execute_command
 
 def main():
   arguments = sys.argv
-  task_manager.execute_command(arguments)
+  execute_command(arguments)
 
 if __name__ == "__main__":
   main()
