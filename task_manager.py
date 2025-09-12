@@ -50,7 +50,6 @@ def handle_mark_in_progress(id: int) -> None:
   if storage.check_task_exists(id=id, by_id=True):
     task = storage.fetch_task_by_id(id)
     storage.set_task_in_progress(task)
-    print(f"Task with ID {id} was successfully marked as in-progress")
   else:
     print(f"Couldn't find the task with ID {id}.")
 
@@ -64,7 +63,6 @@ def handle_mark_done(id: int) -> None:
   if storage.check_task_exists(id=id, by_id=True):
     task = storage.fetch_task_by_id(id)
     storage.set_task_done(task)
-    print(f"Task with ID {id} was successfully marked as done")
   else:
     print(f"Couldn't find the task with ID {id}.")
 
