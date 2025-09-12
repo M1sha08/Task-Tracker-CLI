@@ -1,5 +1,6 @@
-import sys, task_manager
+""" main.py """
 
+import sys, task_manager
 
 def main():
   arguments = sys.argv
