@@ -13,7 +13,7 @@
 Clone the repository:
 
 ```bash
-git clone https://github.com/M1sha08/Task-Tracker-CLI-.git
+git clone https://github.com/M1sha08/Task-Tracker-CLI.git
 ```
 
 ---
