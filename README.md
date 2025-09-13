@@ -23,11 +23,11 @@ git clone https://github.com/M1sha08/Task-Tracker-CLI-.git
 ```
 Task Tracker (CLI)
 |
-|-- main.py > **entry point** hands arguments provided by user to execute_command.py
-|--- execute_command.py > **parses commands** and calls a function from task_manager.py
-|--- task_manager.py > **task-related logic** uses storage.py for data
-|--- storage.py > **data-related functions**
-|--- utils.py > **helper functions**
+|-- main.py - **entry point** hands arguments provided by user to execute_command.py
+|--- execute_command.py - **parses commands** and calls a function from task_manager.py
+|--- task_manager.py - **task-related logic** uses storage.py for data
+|--- storage.py - **data-related functions**
+|--- utils.py - **helper functions**
 ```
 
 ---
@@ -55,15 +55,15 @@ Task Tracker (CLI)
 
 Run this in your terminal: `python main.py <command> <arguments>`
 
-| Command          | Description             | Example                                     |
-| ---------------- | ----------------------- | ------------------------------------------- |
-| add              | Add a new task          | `python main.py add "description"`          |
-| update           | Update task description | `python main.py update 1 "new description"` |
-| delete           | Delete a task           | `python main.py delete 1`                   |
-| mark-in-progress | Mark task in-progress   | `python main.py mark-in-progress 1`         |
-| mark-done        | Mark task as done       | `python main.py mark-done 1`                |
-| list             | List all tasks          | `python main.py list`                       |
-| list-done        | List done tasks         | `python main.py list-done`                  |
-| list-todo        | List todo tasks         | `python main.py list-todo`                  |
-| list-in-progress | List in-progress tasks  | `python main.py list-in-progress`           |
-| show-info        | Show program info       | `python main.py show-info`                  |
+| Command          | Description             | Example                                          |
+| ---------------- | ----------------------- | -------------------------------------------------|
+| add              | Add a new task          | `python main.py add 'id' "description"`          |
+| update           | Update task description | `python main.py update 'id' "new description"`   |
+| delete           | Delete a task           | `python main.py delete 'id'`                     |
+| mark-in-progress | Mark task in-progress   | `python main.py mark-in-progress 'id'`           |
+| mark-done        | Mark task as done       | `python main.py mark-done 'id'`                  |
+| list             | List all tasks          | `python main.py list`                            |
+| list-done        | List done tasks         | `python main.py list-done`                       |
+| list-todo        | List todo tasks         | `python main.py list-todo`                       |
+| list-in-progress | List in-progress tasks  | `python main.py list-in-progress`                |
+| show-info        | Show program info       | `python main.py show-info`                       |
